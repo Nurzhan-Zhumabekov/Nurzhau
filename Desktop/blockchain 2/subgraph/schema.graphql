@@ -1,0 +1,75 @@
+# ----- Vault -----
+
+type VaultUser @entity(immutable: false) {
+  id: Bytes!                       # user address
+  shares: BigInt!
+  totalDeposited: BigInt!
+  totalWithdrawn: BigInt!
+  deposits: [DepositEvent!]! @derivedFrom(field: "user")
+  withdrawals: [WithdrawEvent!]! @derivedFrom(field: "user")
+}
+
+type DepositEvent @entity(immutable: true) {
+  id: Bytes!                       # tx hash + log index
+  user: VaultUser!
+  caller: Bytes!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  txHash: Bytes!
+}
+
+type WithdrawEvent @entity(immutable: true) {
+  id: Bytes!
+  user: VaultUser!                 # owner whose shares were burned
+  caller: Bytes!
+  receiver: Bytes!
+  assets: BigInt!
+  shares: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  txHash: Bytes!
+}
+
+type HarvestEvent @entity(immutable: true) {
+  id: Bytes!
+  yieldAmount: BigInt!
+  totalAssetsAfter: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type VaultStats @entity(immutable: false) {
+  id: Bytes!                       # constant key 0x01
+  totalDeposited: BigInt!
+  totalWithdrawn: BigInt!
+  totalHarvested: BigInt!
+  depositCount: Int!
+  withdrawCount: Int!
+  harvestCount: Int!
+}
+
+# ----- GameItems -----
+
+type Player @entity(immutable: false) {
+  id: Bytes!                       # player address
+  itemBalances: [ItemBalance!]! @derivedFrom(field: "player")
+  totalCrafts: Int!
+}
+
+type ItemBalance @entity(immutable: false) {
+  id: Bytes!                       # keccak(player || tokenId)
+  player: Player!
+  tokenId: BigInt!
+  balance: BigInt!
+}
+
+type CraftEvent @entity(immutable: true) {
+  id: Bytes!
+  crafter: Player!
+  outputId: BigInt!
+  amount: BigInt!
+  timestamp: BigInt!
+  txHash: Bytes!
+}

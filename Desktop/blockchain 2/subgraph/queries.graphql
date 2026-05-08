@@ -1,0 +1,59 @@
+# Sample queries for the Assignment 3 subgraph.
+# Run these against the deployed endpoint at:
+#   https://api.thegraph.com/subgraphs/name/<deployer>/<subgraph-name>
+
+# 1. Top 10 vault depositors with running totals.
+query TopDepositors {
+  vaultUsers(first: 10, orderBy: totalDeposited, orderDirection: desc) {
+    id
+    shares
+    totalDeposited
+    totalWithdrawn
+  }
+}
+
+# 2. Last 20 deposit events with the user that made them, newest first.
+query RecentDeposits {
+  depositEvents(first: 20, orderBy: timestamp, orderDirection: desc) {
+    id
+    user {id}
+    caller
+    assets
+    shares
+    timestamp
+    txHash
+  }
+}
+
+# 3. Vault aggregate stats (single-row entity keyed at 0x01).
+query VaultAggregate {
+  vaultStats(id: "0x01") {
+    totalDeposited
+    totalWithdrawn
+    totalHarvested
+    depositCount
+    withdrawCount
+    harvestCount
+  }
+}
+
+# 4. Players who have crafted at least once, ordered by craft count.
+query TopCrafters {
+  players(first: 10, orderBy: totalCrafts, orderDirection: desc, where: {totalCrafts_gt: 0}) {
+    id
+    totalCrafts
+    itemBalances(where: {balance_gt: "0"}) {
+      tokenId
+      balance
+    }
+  }
+}
+
+# 5. Recent yield harvests with the implied APR-relevant snapshot.
+query HarvestHistory {
+  harvestEvents(first: 50, orderBy: timestamp, orderDirection: desc) {
+    yieldAmount
+    totalAssetsAfter
+    timestamp
+  }
+}

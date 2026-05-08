@@ -1,0 +1,17 @@
+{
+  "name": "blockchain2-assignment3-subgraph",
+  "version": "0.1.0",
+  "description": "Subgraph for Vault + GameItems contracts",
+  "license": "MIT",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ blockchain2-assignment3",
+    "create-local": "graph create --node http://localhost:8020/ blockchain2-assignment3",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 blockchain2-assignment3"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-cli": "0.83.0",
+    "@graphprotocol/graph-ts": "0.35.0"
+  }
+}
