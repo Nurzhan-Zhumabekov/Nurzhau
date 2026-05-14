@@ -225,10 +225,10 @@ section { padding: var(--section-pad); }
 
 .about-image-full img {
   width: 100%;
-  height: 420px;
-  object-fit: cover;
+  height: auto;
   border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  display: block;
 }
 
 .about-text p { font-size: 1.05rem; line-height: 1.9; color: #4A5568; margin-bottom: 20px; }
